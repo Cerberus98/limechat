@@ -3038,12 +3038,7 @@ static NSDateFormatter* dateTimeFormatter = nil;
 		[self send:PRIVMSG, @"NickServ", [NSString stringWithFormat:@"IDENTIFY %@", config.nickPassword], nil];
 	}
 	
-	for (NSString* s in config.loginCommands) {
-		if ([s hasPrefix:@"/"]) {
-			s = [s substringFromIndex:1];
-		}
-		[self sendCommand:s completeTarget:NO target:nil];
-	}
+	
 	
 	for (IRCChannel* c in channels) {
 		if (c.isTalk) {
@@ -3643,6 +3638,13 @@ static NSDateFormatter* dateTimeFormatter = nil;
 	
 	if (!user.length) user = config.nick;
 	if (!realName.length) realName = config.nick;
+	
+	for (NSString* s in config.loginCommands) {
+		if ([s hasPrefix:@"/"]) {
+			s = [s substringFromIndex:1];
+		}
+		[self sendCommand:s completeTarget:NO target:nil];
+	}
 	
 	if (config.password.length) [self send:PASS, config.password, nil];
 	[self send:NICK, sentNick, nil];
